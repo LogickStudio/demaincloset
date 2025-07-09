@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Category, Testimonial } from './types';
 import TshirtIcon from './components/icons/TshirtIcon';
@@ -47,9 +46,9 @@ export const HERO_CTA_TEXT = "Shop The Collection";
 export const ABOUT_US_TEXT = "At Demain Closet, we believe that elegance and style shouldn't break the bank. We are dedicated to curating a collection of chic and sophisticated fashion pieces, from timeless apparel to statement accessories. Our priority is you, our customer, and we strive to provide an unparalleled shopping experience with high-quality products at prices you'll love.";
 
 export const BANK_DETAILS = {
-  accountName: 'Demain Closet',
-  accountNumber: '0123456789', // Replace with actual
-  bankName: 'GTBank PLC', // Replace with actual
+  accountName: 'Alabi Kaosarat',
+  accountNumber: '8131972375',
+  bankName: 'Opay',
 };
 
 export const WHATSAPP_NUMBER = "2349053223790"; // Country code + Number without + or spaces

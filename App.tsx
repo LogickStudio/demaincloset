@@ -47,6 +47,7 @@ const AdminLayout: React.FC = () => (
 
 const App: React.FC = () => {
   const [showSplash, setShowSplash] = useState(true);
+  const [splashError, setSplashError] = useState(false);
   const { isAuthenticated, user, loading: authLoading } = useAuth();
   const { loading: productsLoading } = useProducts();
   const { loading: couponsLoading } = useCoupons();
@@ -57,38 +58,64 @@ const App: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const hasInitialized = useRef(false);
+  const splashTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    // Set a maximum timeout for the splash screen (8 seconds)
+    splashTimeoutRef.current = setTimeout(() => {
+      if (isAppLoading) {
+        setSplashError(true);
+        setShowSplash(false);
+      }
+    }, 8000);
+    return () => {
+      if (splashTimeoutRef.current) clearTimeout(splashTimeoutRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     // This effect handles the splash screen.
     // It waits for app loading to complete, then waits for a minimum duration.
     if (isAppLoading) return; 
-    
+    if (splashError) return;
     // Once loading is done, wait a bit before hiding splash
     const timer = setTimeout(() => {
       setShowSplash(false);
     }, 2000); // Keep splash for 2s after loading for branding and animation
-
     return () => clearTimeout(timer);
-  }, [isAppLoading]);
+  }, [isAppLoading, splashError]);
 
   useEffect(() => {
     // This effect runs once after the splash screen is hidden to ensure
     // the app always starts on the homepage for a consistent user experience.
-    if (!showSplash && !hasInitialized.current) {
+    if (!showSplash && !hasInitialized.current && !splashError) {
       hasInitialized.current = true;
-      
       // List of paths to redirect to homepage from on initial load.
       // These are pages a user shouldn't land on directly when opening the app.
       const pathsToRedirect = ['/login', '/signup', '/dashboard', '/cart'];
-      
       if (pathsToRedirect.includes(location.pathname)) {
         navigate('/', { replace: true });
       }
     }
-  }, [showSplash, location.pathname, navigate]);
+  }, [showSplash, splashError, location.pathname, navigate]);
 
   if (showSplash) {
-     return <SplashScreen />;
+    return <SplashScreen />;
+  }
+
+  if (splashError) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
+        <h2 className="text-2xl font-bold mb-4">Something went wrong</h2>
+        <p className="mb-4">The app is taking too long to load. Please check your internet connection or try again.</p>
+        <button
+          className="px-4 py-2 bg-amber-500 rounded hover:bg-amber-600"
+          onClick={() => window.location.reload()}
+        >
+          Retry
+        </button>
+      </div>
+    );
   }
 
 

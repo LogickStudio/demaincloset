@@ -1,5 +1,3 @@
-
-
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { ProductVariant } from '../types';
 
@@ -79,8 +77,8 @@ export interface Database {
 
 
 // The user has provided the credentials directly to ensure the application works correctly.
-const supabaseUrl = 'https://dclzqkppxmvmhomobsgk.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjbHpxa3BweG12bWhvbW9ic2drIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE5OTIxNjEsImV4cCI6MjA2NzU2ODE2MX0.HPZ2ilHDLu5WHesIiHIuKIz6P0Z4L_dZT_xjqCqjkjk';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export const areSupabaseCredentialsSet = true; // Hardcoded to true as credentials are now set.
 

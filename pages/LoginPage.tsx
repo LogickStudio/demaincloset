@@ -9,6 +9,7 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const { isAuthenticated, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
 
@@ -18,11 +19,25 @@ const LoginPage: React.FC = () => {
     }
   }, [isAuthenticated, navigate]);
 
+  useEffect(() => {
+    // Auto-fill email if remembered
+    const rememberedEmail = localStorage.getItem('demain_remembered_email');
+    if (rememberedEmail) {
+      setEmail(rememberedEmail);
+      setRememberMe(true);
+    }
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
     try {
+      if (rememberMe) {
+        localStorage.setItem('demain_remembered_email', email);
+      } else {
+        localStorage.removeItem('demain_remembered_email');
+      }
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
       // onAuthStateChange will handle navigation via useEffect
@@ -86,7 +101,17 @@ const LoginPage: React.FC = () => {
               />
             </div>
           </div>
-
+          <div className="flex items-center justify-between mt-4">
+            <label className="flex items-center text-sm text-gray-600">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={e => setRememberMe(e.target.checked)}
+                className="mr-2 h-4 w-4 text-amber-600 focus:ring-amber-500 border-gray-300 rounded"
+              />
+              Remember me
+            </label>
+          </div>
           <div>
             <button
               type="submit"

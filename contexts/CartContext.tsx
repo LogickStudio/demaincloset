@@ -50,6 +50,16 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   }, [appliedCoupon]);
 
+  // Limit cart storage to only session (memory) unless user is logged in and checks 'Remember me' (future-proof)
+  // For now, always clear cart from localStorage on logout for safety
+  useEffect(() => {
+    if (!user) {
+      setCartItems([]);
+      localStorage.removeItem(CART_STORAGE_KEY);
+      localStorage.removeItem(APPLIED_COUPON_KEY);
+    }
+  }, [user]);
+
   const getCartSubtotal = (): number => {
     return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   };

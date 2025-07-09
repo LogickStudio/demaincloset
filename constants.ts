@@ -51,4 +51,4 @@ export const BANK_DETAILS = {
   bankName: 'Opay',
 };
 
-export const WHATSAPP_NUMBER = "2349053223790"; // Country code + Number without + or spaces
+export const WHATSAPP_NUMBER = "2348131972375"; // Country code + Number without + or spaces

@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { APP_NAME, LOGO_TEXT } from '../constants';
@@ -27,8 +25,8 @@ const Footer: React.FC = () => {
           </div>
           <div>
             <h4 className="text-lg font-semibold mb-4">Connect With Us</h4>
-            <p className="text-gray-400 mb-2">Email: support@demaincloset.com</p>
-            <p className="text-gray-400">Phone: +234 905 322 3790</p>
+            <p className="text-gray-400 mb-2">Email: alabikaothar430@gmail.com</p>
+            <p className="text-gray-400">Phone: 08131972375</p>
             <div className="flex space-x-4 mt-4">
               <a href="#" aria-label="Facebook" className="text-gray-400 hover:text-amber-400"><i className="fab fa-facebook-f"></i></a>
               <a href="#" aria-label="Instagram" className="text-gray-400 hover:text-amber-400"><i className="fab fa-instagram"></i></a>

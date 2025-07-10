@@ -62,21 +62,21 @@ const ContactPage: React.FC = () => {
               <i className="fas fa-map-marker-alt text-amber-500 text-2xl mt-1"></i>
               <div>
                 <h3 className="font-semibold text-gray-800">Our Address</h3>
-                <p className="text-gray-600">Abuja, FCT, Nigeria</p>
+                <p className="text-gray-600">online 24/7</p>
               </div>
             </div>
             <div className="flex items-start space-x-4">
               <i className="fas fa-envelope text-amber-500 text-2xl mt-1"></i>
               <div>
                 <h3 className="font-semibold text-gray-800">Email Us</h3>
-                <a href="mailto:support@demaincloset.com" className="text-gray-600 hover:text-amber-600">support@demaincloset.com</a>
+                <a href="mailto:alabikaothar430@gmail.com" className="text-gray-600 hover:text-amber-600">alabikaothar430@gmail.com</a>
               </div>
             </div>
             <div className="flex items-start space-x-4">
               <i className="fas fa-phone text-amber-500 text-2xl mt-1"></i>
               <div>
                 <h3 className="font-semibold text-gray-800">Call Us</h3>
-                <a href="tel:+2349053223790" className="text-gray-600 hover:text-amber-600">+234 905 322 3790</a>
+                <a href="tel:+2348131972375" className="text-gray-600 hover:text-amber-600">+234 813 197 2375</a>
               </div>
             </div>
           </div>

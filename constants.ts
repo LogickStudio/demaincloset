@@ -52,6 +52,6 @@ export const BANK_DETAILS = {
 };
 
 export const WHATSAPP_NUMBER = "2348131972375"; // Country code + Number without + or spaces
-export const APP_ADDRESS = "Abuja, FCT, Nigeria";
-export const BRAND_EMAIL = "support@demaincloset.com";
-export const BRAND_PHONE = "+2349053223790";
+export const APP_ADDRESS = "online 24/7";
+export const BRAND_EMAIL = "alabikaothar430@gmail.com";
+export const BRAND_PHONE = "+2348131972375";

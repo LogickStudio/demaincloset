@@ -47,7 +47,7 @@ const AdminLayout: React.FC = () => (
 
 const App: React.FC = () => {
   const [showSplash, setShowSplash] = useState(true);
-  const [splashError, setSplashError] = useState(false);
+  const [supabaseError, setSupabaseError] = useState<string | null>(null);
   const { isAuthenticated, user, loading: authLoading } = useAuth();
   const { loading: productsLoading } = useProducts();
   const { loading: couponsLoading } = useCoupons();
@@ -64,7 +64,6 @@ const App: React.FC = () => {
     // Set a maximum timeout for the splash screen (8 seconds)
     splashTimeoutRef.current = setTimeout(() => {
       if (isAppLoading) {
-        setSplashError(true);
         setShowSplash(false);
       }
     }, 8000);
@@ -73,22 +72,18 @@ const App: React.FC = () => {
     };
   }, []);
 
+  // Lightweight splash: always hide after 2s, regardless of loading state
   useEffect(() => {
-    // This effect handles the splash screen.
-    // It waits for app loading to complete, then waits for a minimum duration.
-    if (isAppLoading) return; 
-    if (splashError) return;
-    // Once loading is done, wait a bit before hiding splash
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 2000); // Keep splash for 2s after loading for branding and animation
+    }, 2000); // Always hide splash after 2 seconds
     return () => clearTimeout(timer);
-  }, [isAppLoading, splashError]);
+  }, []);
 
   useEffect(() => {
     // This effect runs once after the splash screen is hidden to ensure
     // the app always starts on the homepage for a consistent user experience.
-    if (!showSplash && !hasInitialized.current && !splashError) {
+    if (!showSplash && !hasInitialized.current) {
       hasInitialized.current = true;
       // List of paths to redirect to homepage from on initial load.
       // These are pages a user shouldn't land on directly when opening the app.
@@ -97,23 +92,38 @@ const App: React.FC = () => {
         navigate('/', { replace: true });
       }
     }
-  }, [showSplash, splashError, location.pathname, navigate]);
+  }, [showSplash, location.pathname, navigate]);
+
+  // Health check for Supabase connectivity
+  useEffect(() => {
+    async function checkSupabase() {
+      try {
+        // Try a simple query to ensure Supabase is reachable
+        const supabaseUrl = (import.meta as any).env.VITE_SUPABASE_URL;
+        const supabaseAnonKey = (import.meta as any).env.VITE_SUPABASE_ANON_KEY;
+        const res = await fetch(`${supabaseUrl}/rest/v1/products?select=id&limit=1`, {
+          headers: {
+            apikey: supabaseAnonKey,
+            Authorization: `Bearer ${supabaseAnonKey}`,
+          },
+        });
+        if (!res.ok) throw new Error('Supabase unreachable');
+      } catch (err) {
+        setSupabaseError('Cannot connect to the database. Please try again later or contact support.');
+      }
+    }
+    checkSupabase();
+  }, []);
 
   if (showSplash) {
     return <SplashScreen />;
   }
-
-  if (splashError) {
+  if (supabaseError) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
-        <h2 className="text-2xl font-bold mb-4">Something went wrong</h2>
-        <p className="mb-4">The app is taking too long to load. Please check your internet connection or try again.</p>
-        <button
-          className="px-4 py-2 bg-amber-500 rounded hover:bg-amber-600"
-          onClick={() => window.location.reload()}
-        >
-          Retry
-        </button>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-amber-50 text-center p-8">
+        <h1 className="text-3xl font-bold text-amber-600 mb-4">Something went wrong</h1>
+        <p className="text-lg text-gray-700 mb-2">{supabaseError}</p>
+        <p className="text-gray-500">Check your internet connection or reload the page.</p>
       </div>
     );
   }

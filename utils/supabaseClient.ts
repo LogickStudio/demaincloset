@@ -80,6 +80,12 @@ export interface Database {
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error(
+    'Supabase credentials are missing or empty. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your environment variables on Netlify.'
+  );
+}
+
 export const areSupabaseCredentialsSet = true; // Hardcoded to true as credentials are now set.
 
 let supabase: SupabaseClient<Database>;
